@@ -3,4 +3,4 @@ canvas-noise
 
 A highly configurable HTML5 canvas renderer for noise-based procedural textures. So cool.
 
-[Check it out here](http://lencinhaus.github.com/canvas-nosie "Canvas Noise")!
+<a href="http://lencinhaus.github.com/canvas-noise" target="_blank" title="Canvas Noise App">Check it out here</a>, or <a href="tree/gh-pages">switch to the gh-pages branch</a> to view the code!
