@@ -17,13 +17,20 @@
 <div id="controls">
 	<div class="row control">
 		<label for="seed">Seed</label>
+		<div class="tooltip">
+			This value is used to initialize the pseudorandom number generator.<br />
+			It can be any string, even an empty one.
+		</div>
 		<input type="text" id="seed" />
 	</div>
 	<div class="row control">
 		<label for="preset">Preset</label>
+		<div class="tooltip">
+			Choosing one of the presets in the dropdown list will initialize the other parameters with predefined values in order to obtain the chosen effect.
+		</div>
 		<select id="preset" class="skip">
-			<option value="" disabled="disabled" selected="selected"><strong>choose</strong></option>
-			<option value="plain">plain</option>
+			<option value="" disabled="disabled" selected="selected"><strong>choose one</strong></option>
+			<option value="plain">plain noise</option>
 			<option value="clouds">clouds</option>
 			<option value="turbulence">turbulence</option>
 			<option value="marble">marble</option>
@@ -32,6 +39,14 @@
 	</div>
 	<div class="row control">
 		<label for="color">Color</label>
+		<div class="tooltip">
+			This parameter controls how noise is mapped to colors in the final image.<br />
+			If <strong>greyscale</strong> is chosen, the same noise function is used for all the three color components (RGB), resulting in shades of gray.<br />
+			All the other values use three statistically independent noise functions for the three color components.<br />
+			The only exception to this is <strong>gradient</strong>, which can either use three or one noise functions depending on whether the <strong>indipendent</strong> flag is selected or not, respectively.<br />
+			With <strong>RGB</strong>, the noise functions are directly mapped to the three color components, while with <strong>HSL</strong> and <strong>HSV</strong> they are previously converted from the respective cylindrical coordinates to RGB.<br />
+			<strong>gradient</strong> can be used to constrain the color shades inside the colors of a gradient, which can be specified using the <strong>Gradient Start</strong> and <strong>Gradient End</strong> parameters.
+		</div>
 		<select id="color">
 			<option value="greyscale">greyscale</option>
 			<option value="gradient">gradient</option>
@@ -43,22 +58,40 @@
 	<div id="gradient-container">
 		<div class="row control">
 			<label for="independentCheckbox" title="if selected, independent noises will be generated for each color component">Independent</label>
+			<div class="tooltip">
+				If this flag is selected, three statistically independent noise functions will be used for each color component; a single noise function will be used otherwise.
+			</div>
 			<input type="hidden" id="independent" />
 			<input type="checkbox" id="independentCheckbox" class="skip" />
 		</div>
 		<div class="row control color">
 			<label for="gradientStart">Gradient Start</label>
+			<div class="tooltip">
+				Click the box on the right to choose the gradient start color.
+			</div>
 			<input id="gradientStart" type="hidden" />
 			<div id="gradientStartColor"></div>
 		</div>
 		<div class="row control color">
 			<label for="gradientEnd">Gradient End</label>
+			<div class="tooltip">
+				Click the box on the right to choose the gradient end color.
+			</div>
 			<input id="gradientEnd" type="hidden" />
 			<div id="gradientEndColor"></div>
 		</div>
 	</div>
 	<div class="row control">
 		<label for="noiseFunction">Noise Func</label>
+		<div class="tooltip">
+			This parameter control which algorithm is used for generating the noise value at each point.<br />
+			See for reference:
+			<ul>
+				<li><a href="http://en.wikipedia.org/wiki/Value_noise" target="_blank">Value noise</a></li>
+				<li><a href="http://en.wikipedia.org/wiki/Perlin_noise" target="_blank">Classic/improved Perlin noise</a></li>
+				<li><a href="http://en.wikipedia.org/wiki/Simplex_noise" target="_blank">Simplex noise</a></li>
+			</ul>
+		</div>
 		<select id="noiseFunction">
 			<option value="value">value</option>
 			<option value="perlin_classic">classic perlin</option>
@@ -68,6 +101,16 @@
 	</div>
 	<div class="row control" id="smoothing-container">
 		<label for="smoothing">Smoothing</label>
+		<div class="tooltip">
+			This function is used to "smooth" the transition between on noise value and the other in the noise lattice.<br />
+			More specifically, given a distance <strong>d</strong> value between two integer noise values in the range [0, 1]:
+			<ul>
+				<li><strong>cosine</strong>: 0.5 * (1 + cos((1 - <strong>d</strong>) * &pi;))</li>
+				<li><strong>hermite</strong>: 3<strong>d</strong>^2 - 2<strong>d</strong>^3</li>
+				<li><strong>quintic</strong>: 6<strong>d</strong>^5 - 15<strong>d</strong>^4 + 10<strong>d</strong>^3</li>
+			</ul>
+			<strong>hermite</strong> smoothing was used in the original implementation of classic Perlin noise, while <strong>quintic</strong> was used in the improved version of the same.
+		</div>
 		<select id="smoothing">
 			<option value="none">none</option>
 			<option value="cosine">cosine</option>
@@ -77,28 +120,35 @@
 	</div>
 	<div class="row control slider">
 		<label for="scale">Scale</label>
+		<div class="tooltip">
+			The "zooming" factor.<br />
+			A value of 1 indicates no zoom (each pixel in the image corresponds exactly to a noise value in the lattice), while 100 is the maximum zoom level (the image shows the interpolated noise between two consecutive noise values in the lattice).
+		</div>
 		<input id="scale" type="text" readonly="readonly" />
-		<div id="scaleSlider"></div>
+		<div id="scaleSlider" class="slider"></div>
 	</div>
 	<div class="row control slider">
 		<label for="size">Size</label>
+		<div class="tooltip">
+			This parameter controls the size of the permutation kernel used for randomness. The greater the size, the more distinct noise values can be generated without periodic repetition.
+		</div>
 		<input id="size" type="text" readonly="readonly" />
-		<div id="sizeSlider"></div>
+		<div id="sizeSlider" class="slider"></div>
 	</div>
 	<div class="row control slider">
 		<label for="octaves">Octaves</label>
 		<input id="octaves" type="text" readonly="readonly" />
-		<div id="octavesSlider"></div>
+		<div id="octavesSlider" class="slider"></div>
 	</div>
 	<div class="row control slider">
 		<label for="persistence">Persistence</label>
 		<input id="persistence" type="text" readonly="readonly" />
-		<div id="persistenceSlider"></div>
+		<div id="persistenceSlider" class="slider"></div>
 	</div>
 	<div class="row control slider">
 		<label for="lacunarity">Lacunarity</label>
 		<input id="lacunarity" type="text" readonly="readonly" />
-		<div id="lacunaritySlider"></div>
+		<div id="lacunaritySlider" class="slider"></div>
 	</div>
 	<div class="row control">
 		<label for="octaveFunction" title="this function will be called on each computed octave value">Octave Func</label>
@@ -128,12 +178,12 @@
 	<div class="row control slider" id="sine-container">
 		<label for="sineFrequencyCoeff">Sine Frequency</label>
 		<input id="sineFrequencyCoeff" type="text" readonly="readonly" />
-		<div id="sineFrequencyCoeffSlider"></div>
+		<div id="sineFrequencyCoeffSlider" class="slider"></div>
 	</div>
 	<div class="row control slider" id="modular-container">
 		<label for="modularAmplitude">Amplitude</label>
 		<input id="modularAmplitude" type="text" readonly="readonly" />
-		<div id="modularAmplitudeSlider"></div>
+		<div id="modularAmplitudeSlider" class="slider"></div>
 	</div>
 	<div class="row">
 		<button id="refresh">refresh</button>

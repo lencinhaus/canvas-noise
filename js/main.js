@@ -2,6 +2,7 @@ if(!window.console) console = {};
 if(!console.log) console.log = function() {};
 
 $(function() {
+	// presets
 	var defaultPresetArgs = {
 		seed: 'noize',
 		color: 'greyscale',
@@ -40,10 +41,30 @@ $(function() {
 		}),
 	};
 
+	// UI stuff
 	var $controls = $('#controls');
 	
 	// tooltips
-	$('.control label', $controls).tooltip();
+	$controls.find('label').each(function() {
+		var label = $(this);
+		var tooltip = label.parent().find('.tooltip:first');
+		if(!tooltip.length) return;
+		label.tooltip({
+			items: 'label',
+			content: tooltip.html(),
+			hide: {
+				delay: 2000
+			},
+			position: {
+				my: 'right top',
+				at: 'left top'
+			},
+			open: function() {
+				var tooltipId = $(this).data('ui-tooltip-id');
+				$('.ui-tooltip:not(#' + tooltipId + ')').hide();
+			}
+		});
+	});
 
 	// buttons
 	$('#refresh').button().click(startUpdate);
@@ -289,7 +310,7 @@ $(function() {
 		// disable/enable controls
 		$('.control input, .control select, .control textarea', $controls).attr('disabled', 'disabled');
 		$('button', $controls).button('disable');
-		$('.control.slider > div', $controls).slider('disable');
+		$('.control.slider > .slider', $controls).slider('disable');
 		$('#progress').progressbar('enable');
 		
 		updateProgress(0);
@@ -309,7 +330,7 @@ $(function() {
 		$('#progress').progressbar('disable');
 		$('.control input, .control select, .control textarea', $controls).removeAttr('disabled');
 		$('button', $controls).button('enable');
-		$('.control.slider > div', $controls).slider('enable');
+		$('.control.slider > .slider', $controls).slider('enable');
 	}
 	
 	var updatingProgress = false;
