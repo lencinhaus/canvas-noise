@@ -1,0 +1,156 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" dir="ltr" lang="en-US">
+<head>
+<title>Canvas Noise</title>
+<link type="text/css" rel="stylesheet" href="css/smoothness/jquery-ui-1.10.1.min.css" />
+<link type="text/css" rel="stylesheet" href="css/jquery.colorpicker.min.css" />
+<link type="text/css" rel="stylesheet" href="css/styles.css" />
+<script type="text/javascript" src="js/zeroclipboard.min.js"></script>
+<script type="text/javascript" src="js/jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="js/jquery.ba-bbq.min.js"></script>
+<script type="text/javascript" src="js/jquery-ui-1.10.1.min.js"></script>
+<script type="text/javascript" src="js/jquery.colorpicker.min.js"></script>
+<script type="text/javascript" src="js/main.js?v=0.1"></script>
+</head>
+<body>
+<canvas id="canvas"></canvas>
+<div id="controls">
+	<div class="row control">
+		<label for="seed">Seed</label>
+		<input type="text" id="seed" />
+	</div>
+	<div class="row control">
+		<label for="preset">Preset</label>
+		<select id="preset" class="skip">
+			<option value="" disabled="disabled" selected="selected"><strong>choose</strong></option>
+			<option value="plain">plain</option>
+			<option value="clouds">clouds</option>
+			<option value="turbulence">turbulence</option>
+			<option value="marble">marble</option>
+			<option value="wood">wood</option>
+		</select>
+	</div>
+	<div class="row control">
+		<label for="color">Color</label>
+		<select id="color">
+			<option value="greyscale">greyscale</option>
+			<option value="gradient">gradient</option>
+			<option value="rgb">RGB</option>
+			<option value="hsl">HSL</option>
+			<option value="hsv">HSV</option>
+		</select>
+	</div>
+	<div id="gradient-container">
+		<div class="row control">
+			<label for="independentCheckbox" title="if selected, independent noises will be generated for each color component">Independent</label>
+			<input type="hidden" id="independent" />
+			<input type="checkbox" id="independentCheckbox" class="skip" />
+		</div>
+		<div class="row control color">
+			<label for="gradientStart">Gradient Start</label>
+			<input id="gradientStart" type="hidden" />
+			<div id="gradientStartColor"></div>
+		</div>
+		<div class="row control color">
+			<label for="gradientEnd">Gradient End</label>
+			<input id="gradientEnd" type="hidden" />
+			<div id="gradientEndColor"></div>
+		</div>
+	</div>
+	<div class="row control">
+		<label for="noiseFunction">Noise Func</label>
+		<select id="noiseFunction">
+			<option value="value">value</option>
+			<option value="perlin_classic">classic perlin</option>
+			<option value="perlin_improved">improved perlin</option>
+			<option value="simplex">simplex</option>
+		</select>
+	</div>
+	<div class="row control" id="smoothing-container">
+		<label for="smoothing">Smoothing</label>
+		<select id="smoothing">
+			<option value="none">none</option>
+			<option value="cosine">cosine</option>
+			<option value="hermite">hermite</option>
+			<option value="quintic">quintic</option>
+		</select>
+	</div>
+	<div class="row control slider">
+		<label for="scale">Scale</label>
+		<input id="scale" type="text" readonly="readonly" />
+		<div id="scaleSlider"></div>
+	</div>
+	<div class="row control slider">
+		<label for="size">Size</label>
+		<input id="size" type="text" readonly="readonly" />
+		<div id="sizeSlider"></div>
+	</div>
+	<div class="row control slider">
+		<label for="octaves">Octaves</label>
+		<input id="octaves" type="text" readonly="readonly" />
+		<div id="octavesSlider"></div>
+	</div>
+	<div class="row control slider">
+		<label for="persistence">Persistence</label>
+		<input id="persistence" type="text" readonly="readonly" />
+		<div id="persistenceSlider"></div>
+	</div>
+	<div class="row control slider">
+		<label for="lacunarity">Lacunarity</label>
+		<input id="lacunarity" type="text" readonly="readonly" />
+		<div id="lacunaritySlider"></div>
+	</div>
+	<div class="row control">
+		<label for="octaveFunction" title="this function will be called on each computed octave value">Octave Func</label>
+		<select id="octaveFunction">
+			<option value="none">none</option>
+			<option value="absolute">absolute value</option>
+			<option value="custom">custom</option>
+		</select>
+	</div>
+	<div class="row control" id="custom-octave-function-container">
+		<label for="customOctaveFunction">Custom Function</label>
+		<textarea id="customOctaveFunction"></textarea>
+	</div>
+	<div class="row control">
+		<label for="sumFunction" title="this function will be called on each computed fractal sum">Sum Func</label>
+		<select id="sumFunction">
+			<option value="none">none</option>
+			<option value="sine">sine</option>
+			<option value="modular">modular</option>
+			<option value="custom">custom</option>
+		</select>
+	</div>
+	<div class="row control" id="custom-sum-function-container">
+		<label for="customSumFunction">Custom Function</label>
+		<textarea id="customSumFunction"></textarea>
+	</div>
+	<div class="row control slider" id="sine-container">
+		<label for="sineFrequencyCoeff">Sine Frequency</label>
+		<input id="sineFrequencyCoeff" type="text" readonly="readonly" />
+		<div id="sineFrequencyCoeffSlider"></div>
+	</div>
+	<div class="row control slider" id="modular-container">
+		<label for="modularAmplitude">Amplitude</label>
+		<input id="modularAmplitude" type="text" readonly="readonly" />
+		<div id="modularAmplitudeSlider"></div>
+	</div>
+	<div class="row">
+		<button id="refresh">refresh</button>
+	</div>
+	<div class="row">
+		<button id="permalink">get permalink</button>
+	</div>
+	<div class="row">
+		<button id="download">download PNG</button>
+	</div>
+	<div id="progress"></div>
+</div>
+<div id="permalink-confirm" title="Permalink Copied">
+	<p><span class="ui-icon ui-icon-check" style="float: left; margin: 0 7px 20px 0;"></span>The permalink has been copied to your clipboard!</p>
+</div>
+<div id="update-error" title="Error">
+	<p><span class="ui-icon ui-icon-alert" style="float: left; margin: 0 7px 20px 0;"></span><span id="update-error-message"></span></p>
+</div>
+</body>
+</html>
