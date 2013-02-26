@@ -11,10 +11,7 @@ noiseFunctions['simplex'] = {
 		[0, 1],
 		[0, -1]
 	],
-	init: function() {
-		// generate the permutations
-		this.perm = generatePermutationTable();
-	},
+	init: function() {},
 	noise: function(x, y) {
 		var n0, n1, n2, s, i, j, t, X0, Y0, x0, y0, i1, j1, x1, x2, y1, y2, ii, jj, gi0, gi1, gi2, t0, t1, t2;
 		
