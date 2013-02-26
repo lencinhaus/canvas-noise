@@ -123,6 +123,7 @@ $(function() {
 	$('#sumFunction').change(function() {
 		var sumFunction = $(this).val();
 		$('#sine-container').toggle(sumFunction == 'sine');
+		$('#modular-container').toggle(sumFunction == 'modular');
 		$('#custom-sum-function-container').toggle(sumFunction == 'custom');
 	});
 	
