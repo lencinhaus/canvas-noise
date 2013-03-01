@@ -43,6 +43,7 @@ $(function() {
 
 	// UI stuff
 	var $controls = $('#controls');
+	var $controlsContainer = $('#controls-container');
 	
 	// tooltips
 	$controls.find('label').each(function() {
@@ -69,32 +70,8 @@ $(function() {
 	// buttons
 	$('#refresh').button().click(startUpdate);
 	$('#download').button().click(downloadImage);
-	$('#permalink').button();
-	var clip = new ZeroClipboard(document.getElementById('permalink'), {
-		moviePath: 'js/zeroclipboard.swf'
-	});
-	clip.on('mousedown', function() {
-		updatePermalink();
-		$('#permalink').attr('data-clipboard-text', location.href);
-	});
-	clip.on('complete', function() {
-		$('#permalink-confirm').dialog('open');
-	});
 	
 	// dialogs
-	$('#permalink-confirm').dialog({
-		modal: true,
-		resizable: false,
-		draggable: false,
-		autoOpen: false,
-		buttons: [{
-			text: "Ok", 
-			click: function() { 
-				$( this ).dialog( "close" ); 
-			} 
-		}],
-		dialogClass: 'no-close'
-	});
 	$('#update-error').dialog({
 		modal: true,
 		resizable: false,
@@ -229,9 +206,7 @@ $(function() {
 	
 	// canvas
 	var canvas = document.getElementById('canvas');
-	canvas.width = window.innerWidth - $controls.outerWidth();
-	canvas.height = window.innerHeight;
-	var context = canvas.getContext('2d');
+	var context;
 	
 	// worker
 	var noiseWorker = new Worker('js/noise.js');
@@ -358,10 +333,20 @@ $(function() {
 		location.hash = '#' + serialized;
 	}
 	
+	function resize() {
+		$controlsContainer.height(window.innerHeight);
+		canvas.width = window.innerWidth - $controlsContainer.outerWidth();
+		canvas.height = window.innerHeight;
+		context = canvas.getContext('2d');
+	}
+	
+	$(window).resize(resize);
+	
 	// init
 	var args = $.extend({}, presets.plain);
 	if(location.hash) $.extend(args, $.deparam(location.hash.substr(1), true));
 	
 	setArgs(args);
+	resize();
 	startUpdate();
 });

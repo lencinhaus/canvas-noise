@@ -13,16 +13,18 @@ body {
 	font-size: 11px;
 }
 
-#canvas, #controls {
+#canvas, #controls-container {
 	position: absolute;
 }
 #canvas {
 	left: 0px;
 }
-#controls {
+#controls-container {
+	overflow-y: scroll;
 	right: 0px;
+}
+#controls {
 	padding: 5px;
-	width: 250px;
 }
 #controls .row {
 	width: 100%;
@@ -63,6 +65,12 @@ body {
 	height: 20px;
 	padding: 0px;
 	border: 0px;
+}
+
+#controls .control input[type="checkbox"] {
+	width: auto;
+	height: auto;
+	margin-top: 4px;
 }
 
 #controls .control textarea {
