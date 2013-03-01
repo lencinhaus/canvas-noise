@@ -8,7 +8,7 @@ $(function() {
 		color: 'greyscale',
 		noiseFunction: 'perlin_improved',
 		smoothing: 'quintic',
-		scale: 95,
+		scale: 50,
 		size: 256,
 		octaves: 1,
 		persistence: .5,
@@ -143,7 +143,7 @@ $(function() {
 	
 	// sliders
 	$('#scaleSlider').slider({
-		min: 1,
+		min: 0,
 		max: 100,
 		slide: function(event, ui) {
 			$('#scale').val(ui.value);

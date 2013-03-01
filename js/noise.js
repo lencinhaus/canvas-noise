@@ -60,8 +60,7 @@ function update(data) {
 	// init data and functions
 	var doneSteps = 0;
 	var oldProgress, progress = 0;
-	var scale = Math.log(args.scale) / Math.log(100);
-	var relativeScale = (2 / imageData.width) * scale * scale + (-1 - 1 / imageData.width) * scale + 1;
+	var relativeScale = Math.pow(imageData.width, -args.scale / 100);
 	
 	function stepDone() {
 		// publish progress
