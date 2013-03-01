@@ -9,7 +9,7 @@ html, body, div {
 
 body {
 	background-color: black;
-	font-family: Verdana, Arial, sans-serif;
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 	font-size: 11px;
 }
 
@@ -25,6 +25,7 @@ body {
 }
 #controls {
 	padding: 5px;
+	clear: both;
 }
 #controls .row {
 	width: 100%;
@@ -107,4 +108,22 @@ code {
 	background-color: #eee;
 	padding: 2px;
 	margin: 2px;
+}
+
+#github-fork {
+	display: block;
+	background-image: url(images/github_icon.png);
+	background-repeat: no-repeat;
+	background-position: right;
+	height: 50px;
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+	font-size: 13px;
+	font-weight: 700;
+	color: white;
+  	text-decoration: none;
+	text-shadow: 0 -1px rgba(0,0,0,0.5);
+  	line-height: 50px;
+  	text-align: right;
+  	padding-right: 60px;
+  	margin-bottom: 10px;
 }
