@@ -17,7 +17,9 @@ $(function() {
 		gradientEnd: '00ff00',
 		independent: false,
 		octaveFunction: 'none',
+		customOctaveFunction: 'return n;',
 		sumFunction: 'none',
+		customSumFunction: 'return n;',
 		sineFrequencyCoeff: 1,
 		modularAmplitude: 5
 	};

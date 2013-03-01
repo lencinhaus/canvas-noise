@@ -102,3 +102,9 @@ body {
 .no-close .ui-dialog-titlebar-close {
   display: none;
 }
+
+code {
+	background-color: #eee;
+	padding: 2px;
+	margin: 2px;
+}

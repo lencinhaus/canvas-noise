@@ -114,7 +114,7 @@ function update(data) {
 				
 				for(var o = 0; o < args.octaves; o++) {
 					var octave = nf.noise(scaledX * frequency, scaledY * frequency);
-					if(octaveFunction) octave = octaveFunction(octave, scaledX, scaledY);
+					if(octaveFunction) octave = octaveFunction(octave, scaledX, scaledY, o + 1);
 					octave *= amplitude;
 					noise += octave;
 					

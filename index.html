@@ -29,7 +29,7 @@
 			Choosing one of the presets in the dropdown list will initialize the other parameters with predefined values in order to obtain the chosen effect.
 		</div>
 		<select id="preset" class="skip">
-			<option value="" disabled="disabled" selected="selected"><strong>choose one</strong></option>
+			<option value="" disabled="disabled" selected="selected">choose one</option>
 			<option value="plain">plain noise</option>
 			<option value="clouds">clouds</option>
 			<option value="turbulence">turbulence</option>
@@ -57,7 +57,7 @@
 	</div>
 	<div id="gradient-container">
 		<div class="row control">
-			<label for="independentCheckbox" title="if selected, independent noises will be generated for each color component">Independent</label>
+			<label for="independentCheckbox">Independent</label>
 			<div class="tooltip">
 				If this flag is selected, three statistically independent noise functions will be used for each color component; a single noise function will be used otherwise.
 			</div>
@@ -137,21 +137,42 @@
 	</div>
 	<div class="row control slider">
 		<label for="octaves">Octaves</label>
+		<div class="tooltip">
+			The number of noise octaves that are summed in the fractal sum.<br />
+			The octaves amplitude and frequency both start at 1, and are multiplied by the <strong>Persistence</strong> and <strong>Lacunarity</strong> factors respectively after each octave value is computed.<br />
+			Each octave value is passed through the <strong>Octave Function</strong> below.<br />
+			After all octaves have been computed, their values are summed, and the sum is passed through the <strong>Sum Function</strong> below.<br/>
+			Finally, after all sum values have been computed, they are scaled to the range [0, 1].
+		</div>
 		<input id="octaves" type="text" readonly="readonly" />
 		<div id="octavesSlider" class="slider"></div>
 	</div>
 	<div class="row control slider">
 		<label for="persistence">Persistence</label>
+		<div class="tooltip">
+			The octaves amplitude starts at 1, and is multiplied by this factor after each octave value is computed.
+		</div>
 		<input id="persistence" type="text" readonly="readonly" />
 		<div id="persistenceSlider" class="slider"></div>
 	</div>
 	<div class="row control slider">
 		<label for="lacunarity">Lacunarity</label>
+		<div class="tooltip">
+			The octaves frequency starts at 1, and is multiplied by this factor after each octave value is computed.
+		</div>
 		<input id="lacunarity" type="text" readonly="readonly" />
 		<div id="lacunaritySlider" class="slider"></div>
 	</div>
 	<div class="row control">
-		<label for="octaveFunction" title="this function will be called on each computed octave value">Octave Func</label>
+		<label for="octaveFunction">Octave Func</label>
+		<div class="tooltip">
+			Each octave value is passed through this function. Available options are:
+			<ul>
+				<li><strong>none</strong>: the value is left untouched;</li>
+				<li><strong>absolute</strong>: the value is scaled in the range [-1, 1], the its absolute value is returned;</li>
+				<li><strong>custom</strong>: you can manually set the function that will be used.</li>
+			</ul>
+		</div>
 		<select id="octaveFunction">
 			<option value="none">none</option>
 			<option value="absolute">absolute value</option>
@@ -160,10 +181,33 @@
 	</div>
 	<div class="row control" id="custom-octave-function-container">
 		<label for="customOctaveFunction">Custom Function</label>
+		<div class="tooltip">
+			Here you can provide the actual body of the javascript function that will be applied to octave values.<br />
+			The function takes three arguments:
+			<ul>
+				<li><strong>n</strong>: the octave value, in the range [0, 1];</li>
+				<li><strong>x</strong>: the x coordinate of the value being computed;</li>
+				<li><strong>y</strong>: the y coordinate of the value being computed;</li>
+				<li><strong>o</strong>: the 1-based number of the octave being computed.</li>
+			</ul>
+			The function should return a value in the range [0, 1].<br />
+			The function declaration (<code>function(x, y, z, o){</code>) and closing bracket are automatically added respectively before and after your code, so you must not write them.<br />
+			An example could be:<br />
+			<code class="code">return Math.cos(y + n * x);</code>
+		</div>
 		<textarea id="customOctaveFunction"></textarea>
 	</div>
 	<div class="row control">
-		<label for="sumFunction" title="this function will be called on each computed fractal sum">Sum Func</label>
+		<label for="sumFunction">Sum Func</label>
+		<div class="tooltip">
+			Each fractal sum value is passed through this function. Available options are:
+			<ul>
+				<li><strong>none</strong>: the value is left untouched;</li>
+				<li><strong>sine</strong>: the value is summed to the X coordinate multiplied by the <strong>Sine Frequency</strong> factor below, the the sine of the resulting value is computed and scaled to the range [0, 1];</li>
+				<li><strong>modular</strong>: the value is multiplied by the <strong>Amplitude</strong> factor below, then its decimal part is returned;</li>
+				<li><strong>custom</strong>: you can manually set the function that will be used.</li>
+			</ul>
+		</div>
 		<select id="sumFunction">
 			<option value="none">none</option>
 			<option value="sine">sine</option>
@@ -173,15 +217,34 @@
 	</div>
 	<div class="row control" id="custom-sum-function-container">
 		<label for="customSumFunction">Custom Function</label>
+		<div class="tooltip">
+			Here you can provide the actual body of the javascript function that will be applied to fractal sums.<br />
+			The function takes three arguments:
+			<ul>
+				<li><strong>n</strong>: the octave value, in the range [0, 1];</li>
+				<li><strong>x</strong>: the x coordinate of the value being computed;</li>
+				<li><strong>y</strong>: the y coordinate of the value being computed;</li>
+			</ul>
+			The function should return a value in the range [0, 1].<br />
+			The function declaration (<code>function(x, y, z, o){</code>) and closing bracket are automatically added respectively before and after your code, so you must not write them.<br />
+			An example could be:<br />
+			<code class="code">return Math.cos(y + n * x);</code>
+		</div>
 		<textarea id="customSumFunction"></textarea>
 	</div>
 	<div class="row control slider" id="sine-container">
 		<label for="sineFrequencyCoeff">Sine Frequency</label>
+		<div class="tooltip">
+			The X coordinate will be multiplied by this factor before being added to the fractal sum and used as the sine argument.
+		</div>
 		<input id="sineFrequencyCoeff" type="text" readonly="readonly" />
 		<div id="sineFrequencyCoeffSlider" class="slider"></div>
 	</div>
 	<div class="row control slider" id="modular-container">
 		<label for="modularAmplitude">Amplitude</label>
+		<div class="tooltip">
+			The fractal sum will be multiplied by this factor.
+		</div>
 		<input id="modularAmplitude" type="text" readonly="readonly" />
 		<div id="modularAmplitudeSlider" class="slider"></div>
 	</div>
