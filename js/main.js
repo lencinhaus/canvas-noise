@@ -109,6 +109,7 @@ $(function() {
 		var presetArgs = presets[$(this).val()];
 		setArgs(presetArgs);
 		startUpdate();
+		$(this).val('');
 	});
 	
 	// progress
